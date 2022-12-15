@@ -1,6 +1,9 @@
 function onSubmit(e) {
   e.preventDefault();
 
+  document.querySelector('.msg').textContent = '';
+  document.querySelector('#image').src = '';
+
   const prompt = document.querySelector('#prompt').value;
   const size = document.querySelector('#size').value;
 
@@ -33,7 +36,12 @@ async function generateImageRequest(prompt, size) {
     }
 
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
+
+    const imageUrl = data.data
+
+    document.querySelector('#image').src = imageUrl;
+
     removeLoader();
   } catch (error) {
     document.querySelector('.msg').textContent = error;
@@ -42,10 +50,12 @@ async function generateImageRequest(prompt, size) {
 
 function showLoader() {
   document.querySelector('.loading-wrap').classList.add('show');
+  document.querySelector('.btn').ariaBusy = true;
 }
 
 function removeLoader() {
   document.querySelector('.loading-wrap').classList.remove('show');
+  document.querySelector('.btn').ariaBusy = false;
 }
 
 document.querySelector('#image-form').addEventListener('submit', onSubmit);
